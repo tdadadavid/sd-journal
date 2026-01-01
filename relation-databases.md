@@ -23,7 +23,7 @@ COMMIT;
 What if a transaction fails, then we issue a `ROLLBACK`. This instructs the database to revert to the previous state before the transaction began this ensures every update made by transaction block before the failure is reverted
 
 
->>> "...PostgreSQL actually treats every SQL statement as being executed within a transaction. If you do not issue a BEGIN command, then each individual statement has an implicit BEGIN and (if successful) COMMIT wrapped around it. A group of statements surrounded by BEGIN and COMMIT is sometimes called a transaction block. -- [Postgres Docs](https://www.postgresql.org/docs/current/tutorial-transactions.html)"
+> "...PostgreSQL actually treats every SQL statement as being executed within a transaction. If you do not issue a BEGIN command, then each individual statement has an implicit BEGIN and (if successful) COMMIT wrapped around it. A group of statements surrounded by BEGIN and COMMIT is sometimes called a transaction block. -- [Postgres Docs](https://www.postgresql.org/docs/current/tutorial-transactions.html)"
 
 While rolling back a transaction, you might want to rollback to a specific point in time within that transaction, You can use `SAVEPOINT` for that.
 
@@ -57,7 +57,7 @@ graph TD
 ```
 
 1. *Atomicity*: All operations are executed at a unit of work. meaning if any operation fails everything fails. In postgres the operations are marked complete when they are committed (ie. written to disk).
->>> "...A transactional database guarantees that all the updates made by a transaction are logged in permanent storage (i.e., on disk) before the transaction is reported complete. -- [Postgres Docs](https://www.postgresql.org/docs/current/tutorial-transactions.html)"
+> "...A transactional database guarantees that all the updates made by a transaction are logged in permanent storage (i.e., on disk) before the transaction is reported complete. -- [Postgres Docs](https://www.postgresql.org/docs/current/tutorial-transactions.html)"
 
 2. *Consistency*: This says that the data will never go into an incorrect state. They achieve this by enforcing constraints, constraints and triggers. Reference: [Postgres Constraints](https://www.postgresql.org/docs/current/ddl-constraints.html)
 
