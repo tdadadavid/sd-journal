@@ -42,6 +42,8 @@ BEGIN;
 ```
 
 [Reference for SAVEPOINT](https://www.postgresql.org/docs/current/sql-savepoint.html)
+### Special cases when failure happens
+> "Some PostgreSQL data types and functions have special rules regarding transactional behavior. In particular, changes made to a sequence (and therefore the counter of a column declared using serial) are immediately visible to all other transactions and are not rolled back if the transaction that made the changes aborts. See [Section 9.17](https://www.postgresql.org/docs/current/functions-sequence.html) and [Section 8.1.4](https://www.postgresql.org/docs/current/datatype-numeric.html#DATATYPE-SERIAL)."
 
 ---
 
