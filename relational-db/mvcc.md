@@ -106,7 +106,7 @@ SELECT * FROM users;
 ```
 
 Now we see the updated data in `session_2`, The difference between **READ COMMITTED** and **REPEATABLE READ** is that all reads within the same transaction is consistent for **REPEATABLE READ**, but not for **READ COMMITTED**. 
-In *READ COMMITTED*, each read within a transaction is consistent with the state of the database at the time of the read, but not necessarily consistent with the state of the database at the time of the transaction's start. In *REPEATABLE READ*, each read within a transaction is consistent with the state of the database at the time of the transaction's start, but not necessarily consistent with the state of the database at the time of the transaction's commit.
+In **READ COMMITTED**, each read within a transaction is consistent with the state of the database at the time of the read, but not necessarily consistent with the state of the database at the time of the transaction's start. In **REPEATABLE READ**, each read within a transaction is consistent with the state of the database at the time of the transaction's start, but not necessarily consistent with the state of the database at the time of the transaction's commit.
 
 <br/>
 <br/>
