@@ -6,9 +6,10 @@ Postgres can store multiple versions of a row in a table. These hidden columns a
 
 1. `ctid`: unique row identifier. It is made up of a page number and an ID within that page.
 ```mermaid
-graph LR
-    A[ctid] --> B[Page Number]
-    B --> C[ID within Page]
+graph TD
+    A[ctid] 
+    A --> B[Page Number]
+    A --> C[ID within Page]
 ```
 
 2. `xmin`: identifier for the transaction that created the row. It can change if the row is updated.
