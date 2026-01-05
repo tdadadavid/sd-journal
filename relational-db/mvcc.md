@@ -38,7 +38,7 @@ Isolation states how each transaction interacts with other transactions while ru
 3. Read Uncommitted
 4. Serializable
 
-<details open> 
+<details> 
 <summary><b>Read Committed<b></summary>
 This isolation ensures that a transaction only reads committed data. Meaning it is possible two reads within the same transaction sees different data. 
     
@@ -120,7 +120,7 @@ This isolation ensures that a transaction only reads committed data. Meaning it 
   > "Because Read Committed mode starts each command with a new snapshot that includes all transactions committed up to that instant, subsequent commands in the same transaction will see the effects of the committed concurrent transaction in any case. The point at issue above is whether or not a single command sees an absolutely consistent view of the database.The partial transaction isolation provided by Read Committed mode is adequate for many applications, and this mode is fast and simple to use; however, it is not sufficient for all cases. Applications that do complex queries and updates might require a more rigorously consistent view of the database than Read Committed mode provides." -- [Postgres Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
 </details>
 
-<details open> 
+<details> 
 <summary><b>Repeatable Read<b></summary>
 
 This isolation ensures that a transaction has consistent values for the same read within a trnasaction. It is not affected by other updates from other transactions.
@@ -170,7 +170,7 @@ You still get the same result, why is that? because in `REPEATABLE READS` isolat
 
 </details>
 
-<details open>
+<details>
 <summary><b>Read Uncommitted<b></summary>
 This isolation level allows transactions to read uncommitted data. It is the least restrictive isolation level and can lead to dirty reads, non-repeatable reads, and phantom reads.
 
@@ -190,7 +190,7 @@ Phantom Read will occur when a transaction reads a range of rows and gets differ
 **POSTGRESQL** does not support `READ UNCOMMITTED` isolation level
 </details>
 
-<details open>
+<details>
 <summary><b>Serializable</b></summary>
 This isolation levels garauntes a consistent state across all reads. Serializable is the strictest isolation level among the three. What this does is that when a transaction writes (insert/update) to a particular table it obtains a `LOCK` and every other transaction is blocked until the current transaction is commited or rollback. This posses a serious performance issue actually.
 
