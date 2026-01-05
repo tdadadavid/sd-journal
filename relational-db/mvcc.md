@@ -33,20 +33,23 @@ Resources:
 ## Transaction Isolation Levels
 Isolation states how each transaction interacts with other transactions while running concurrently. It determines the visibility of data changes made by other transactions. We can tune this in several ways:
 
-1. Read Uncommitted
-2. Read Committed
-3. Repeatable Read
-4. Serializable
+1. Read Committed 
+2. Repeatable Read
+3. Serializable
+4. Read Uncommitted
+
+
 
 <details open> 
 <summary><b>Read Committed<b></summary>
-
-
 This isolation ensures that a transaction only reads committed data. Meaning it is possible two reads within the same transaction sees different data. 
     
   #### Practical Flow (MySQL)
-    
-  1. Start two `session_1`, `session_2` and start transaction in each sessions.
+  1. set transaction isolation level to READ COMMITTED
+  ```sql
+  SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+  ```
+  2. Start two `session_1`, `session_2` and start transaction in each sessions.
   ```sql
   START TRANSACTION;
   ```
@@ -61,7 +64,7 @@ This isolation ensures that a transaction only reads committed data. Meaning it 
   +----+-------+
   ```
     
-  2. Update `name` to 'John Doe' in `session_1`.
+  3. Update `name` to 'John Doe' in `session_1`.
   ```sql
   UPDATE users SET name = 'John Doe' WHERE id = 1;
   ```
@@ -75,7 +78,7 @@ This isolation ensures that a transaction only reads committed data. Meaning it 
   +----+----------+
   ```
     
-  3. Read data table from `session_2`
+  4. Read data table from `session_2`
   ```sql
   SELECT * FROM users;
   ```
@@ -90,7 +93,7 @@ This isolation ensures that a transaction only reads committed data. Meaning it 
     
   We still get *David* as the result, this is because the transaction is still open, i.e not `COMMITED`.
     
-  4. Commit the transaction in `session_1`
+  5. Commit the transaction in `session_1`
   ```sql
   COMMIT;
   ```
@@ -119,17 +122,18 @@ This isolation ensures that a transaction only reads committed data. Meaning it 
   > "Because Read Committed mode starts each command with a new snapshot that includes all transactions committed up to that instant, subsequent commands in the same transaction will see the effects of the committed concurrent transaction in any case. The point at issue above is whether or not a single command sees an absolutely consistent view of the database.The partial transaction isolation provided by Read Committed mode is adequate for many applications, and this mode is fast and simple to use; however, it is not sufficient for all cases. Applications that do complex queries and updates might require a more rigorously consistent view of the database than Read Committed mode provides." -- [Postgres Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
 </details>
 
-[Link to my practice](https://github.com/tdadadavid/pg-mvcc)
-
-
 <details open> 
 <summary><b>Repeatable Read<b></summary>
 
 This isolation ensures that a transaction has consistent values for the same read within a trnasaction. It is not affected by other updates from other transactions.
 
 #### Practical Flow (MySQL)
-1. Open two mysql sessions `session_1` and `session_2`
-2. Create db and table eg. testdb and users table (id int, name varchar(255))
+1. Set transaction isolation level to REPEATABLE READ
+```sql
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+```
+2. Open two mysql sessions `session_1` and `session_2`
+3. Create db and table eg. testdb and users table (id int, name varchar(255))
 3. insert data into users from `session_1`. 
   ```sql 
   INSERT INTO users (name) VALUES (1, 'John');
@@ -167,3 +171,38 @@ COMMIT;
 You still get the same result, why is that? because in `REPEATABLE READS` isolation level, all reads within a transaction are consistent and it is not affected by changes made by other transactions. Meaning if at the start of the transaction (in both sessions) the name was `John` in both sessions, then `session_1` updates it to `John Doe`, `session_2` will still see the name as `John` until it `COMMIT` its own transaction.
 
 </details>
+
+<details open>
+<summary><b>Read Uncommitted<b></summary>
+This isolation level allows transactions to read uncommitted data. It is the least restrictive isolation level and can lead to dirty reads, non-repeatable reads, and phantom reads.
+
+Dirty Read will occur when a transaction reads data that has been modified but not committed by another transaction. This can lead to inconsistent data and should be avoided. eg ROLLBACK command is applied
+
+Non-repeatable Read will occur when a transaction reads the same row twice and gets different values. This can happen if another transaction commits a change between the two reads.
+
+Phantom Read will occur when a transaction reads a range of rows and gets different results. This can happen if another transaction inserts a row into the range between the two reads.
+
+#### Practical Flow (MySQL)
+  1. set transaction isolation level to READ UNCOMMITTED
+  ```sql
+  SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+  ```
+  2... follow through with examples used in previous isolation levels
+
+**POSTGRESQL** does not support `READ UNCOMMITTED` isolation level
+</details>
+
+<details open>
+<summary><b>Serializable</b></summary>
+This isolation levels garauntes a consistent state across all reads. Serializable is the strictest isolation level among the three. What this does is that when a transaction writes (insert/update) to a particular table it obtains a `LOCK` and every other transaction is blocked until the current transaction is commited or rollback. This posses a serious performance issue actually.
+
+### Practical Flow (MySQL)
+To experience this change your isolation level to `SERIALIZABLE` and try the same steps in previous examples.
+```sql
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+```
+
+</details>
+
+
+* [Link to my practice](https://github.com/tdadadavid/pg-mvcc)
