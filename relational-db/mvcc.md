@@ -16,6 +16,20 @@ graph TD
 3. `xmax`: identifier for the transaction that deleted the row. When `xmax` is set, the row is considered deleted.
 4. `xvac`: identifier for the transaction that vacuumed the row
 
+To see these tables we use the following query:
+
+```sql
+SELECT ctid, xmin, xmax, * FROM <table_name>;
+```
+
+<img src="./ctidxminxmax.heic" alt="mvcc">
+
+Resources:
+1. [Denis Magada - Github](https://github.com/dmagda/DevMastersDb/blob/main/postgres/postgres_mvcc_backstage.md#js-repo-pjax-container)
+2. [MVCC - Denis Magada](https://www.youtube.com/watch?v=TBmDBw1IIoY)
+
+
+
 ## Transaction Isolation Levels
 
 1. Read Uncommitted
