@@ -38,83 +38,83 @@ Isolation states how each transaction interacts with other transactions while ru
 3. Repeatable Read
 4. Serializable
 
-<detiails> 
-<summary> Read Committed <summary>
-This isolation ensures that a transaction only reads committed data. Meaning it is possible two reads within the same transaction sees different data. 
-
-#### Practical Flow (MySQL)
-
-1. Start two `session_1`, `session_2` and start transaction in each sessions.
-```sql
-START TRANSACTION;
-```
-
-Assuming the current state of the database is as follows:
-
-```
-+----+-------+
-| id | name  |
-|----+-------|
-| 1  | David |
-+----+-------+
-```
-
-2. Update `name` to 'John Doe' in `session_1`.
-```sql
-UPDATE users SET name = 'John Doe' WHERE id = 1;
-```
-_NOTE: this is within a transaction_
-
-```
-+----+----------+
-| id | name     |
-|----+----------|
-| 1  | John Doe |
-+----+----------+
-```
-
-3. Read data table from `session_2`
-```sql
-SELECT * FROM users;
-```
-
-```
-+----+----------+
-| id | name     |
-|----+----------|
-| 1  | David    |
-+----+----------+
-```
-
-We still get *David* as the result, this is because the transaction is still open, i.e not `COMMITED`.
-
-4. Commit the transaction in `session_1`
-```sql
-COMMIT;
-```
-
-5. Read data table from `session_2`
-```sql
-SELECT * FROM users;
-```
-
-```
-+----+----------+
-| id | name     |
-|----+----------|
-| 1  | John Doe |
-+----+----------+
-```
-
-Now we see the updated data in `session_2`, The difference between **READ COMMITTED** and **REPEATABLE READ** is that all reads within the same transaction is consistent for **REPEATABLE READ**, but not for **READ COMMITTED**. 
-In **READ COMMITTED**, each read within a transaction is consistent with the state of the database at the time of the read, but not necessarily consistent with the state of the database at the time of the transaction's start. In **REPEATABLE READ**, each read within a transaction is consistent with the state of the database at the time of the transaction's start, but not necessarily consistent with the state of the database at the time of the transaction's commit.
-
-<br/>
-<br/>
-<br/>
-
-
-> "Because Read Committed mode starts each command with a new snapshot that includes all transactions committed up to that instant, subsequent commands in the same transaction will see the effects of the committed concurrent transaction in any case. The point at issue above is whether or not a single command sees an absolutely consistent view of the database.The partial transaction isolation provided by Read Committed mode is adequate for many applications, and this mode is fast and simple to use; however, it is not sufficient for all cases. Applications that do complex queries and updates might require a more rigorously consistent view of the database than Read Committed mode provides." -- [Postgres Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
+<details open> 
+    <summary><b>Read Committed<b><summary>
+    This isolation ensures that a transaction only reads committed data. Meaning it is possible two reads within the same transaction sees different data. 
+    
+    #### Practical Flow (MySQL)
+    
+    1. Start two `session_1`, `session_2` and start transaction in each sessions.
+    ```sql
+    START TRANSACTION;
+    ```
+    
+    Assuming the current state of the database is as follows:
+    
+    ```
+    +----+-------+
+    | id | name  |
+    |----+-------|
+    | 1  | David |
+    +----+-------+
+    ```
+    
+    2. Update `name` to 'John Doe' in `session_1`.
+    ```sql
+    UPDATE users SET name = 'John Doe' WHERE id = 1;
+    ```
+    _NOTE: this is within a transaction_
+    
+    ```
+    +----+----------+
+    | id | name     |
+    |----+----------|
+    | 1  | John Doe |
+    +----+----------+
+    ```
+    
+    3. Read data table from `session_2`
+    ```sql
+    SELECT * FROM users;
+    ```
+    
+    ```
+    +----+----------+
+    | id | name     |
+    |----+----------|
+    | 1  | David    |
+    +----+----------+
+    ```
+    
+    We still get *David* as the result, this is because the transaction is still open, i.e not `COMMITED`.
+    
+    4. Commit the transaction in `session_1`
+    ```sql
+    COMMIT;
+    ```
+    
+    5. Read data table from `session_2`
+    ```sql
+    SELECT * FROM users;
+    ```
+    
+    ```
+    +----+----------+
+    | id | name     |
+    |----+----------|
+    | 1  | John Doe |
+    +----+----------+
+    ```
+    
+    Now we see the updated data in `session_2`, The difference between **READ COMMITTED** and **REPEATABLE READ** is that all reads within the same transaction is consistent for **REPEATABLE READ**, but not for **READ COMMITTED**. 
+    In **READ COMMITTED**, each read within a transaction is consistent with the state of the database at the time of the read, but not necessarily consistent with the state of the database at the time of the transaction's start. In **REPEATABLE READ**, each read within a transaction is consistent with the state of the database at the time of the transaction's start, but not necessarily consistent with the state of the database at the time of the transaction's commit.
+    
+    <br/>
+    <br/>
+    <br/>
+    
+    
+    > "Because Read Committed mode starts each command with a new snapshot that includes all transactions committed up to that instant, subsequent commands in the same transaction will see the effects of the committed concurrent transaction in any case. The point at issue above is whether or not a single command sees an absolutely consistent view of the database.The partial transaction isolation provided by Read Committed mode is adequate for many applications, and this mode is fast and simple to use; however, it is not sufficient for all cases. Applications that do complex queries and updates might require a more rigorously consistent view of the database than Read Committed mode provides." -- [Postgres Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
 </details>
 
 [Link to my practice](https://github.com/tdadadavid/pg-mvcc)
