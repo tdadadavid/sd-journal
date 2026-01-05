@@ -24,9 +24,7 @@ SELECT ctid, xmin, xmax, * FROM <table_name>;
 
 ![MVCC](./ctid_xmax_xmin.png)
 
-Resources:
-1. [Denis Magada - Github](https://github.com/dmagda/DevMastersDb/blob/main/postgres/postgres_mvcc_backstage.md#js-repo-pjax-container)
-2. [MVCC - Denis Magada](https://www.youtube.com/watch?v=TBmDBw1IIoY)
+
 
 ----
 
@@ -204,3 +202,9 @@ SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
 
 * [Link to my practice](https://github.com/tdadadavid/pg-mvcc)
+
+Resources:
+1. [Denis Magada - Github](https://github.com/dmagda/DevMastersDb/blob/main/postgres/postgres_mvcc_backstage.md#js-repo-pjax-container)
+2. [MVCC - Denis Magada](https://www.youtube.com/watch?v=TBmDBw1IIoY)
+3. [Isolation Anomalies in PostgreSQL](https://pgdash.io/blog/isolation-anomalies-in-postgresql.html)
+4. [Transaction Isolation in Postgres, explained](https://www.thenile.dev/blog/transaction-isolation-postgres)
