@@ -35,10 +35,8 @@ Isolation states how each transaction interacts with other transactions while ru
 
 1. Read Committed 
 2. Repeatable Read
-3. Serializable
-4. Read Uncommitted
-
-
+3. Read Uncommitted
+4. Serializable
 
 <details open> 
 <summary><b>Read Committed<b></summary>
