@@ -22,7 +22,7 @@ To see these tables we use the following query:
 SELECT ctid, xmin, xmax, * FROM <table_name>;
 ```
 
-<img src="./ctid_xmin_xmax.png" alt="mvcc">
+<img src="./ctid_xmax_xmin.png" alt="mvcc">
 
 Resources:
 1. [Denis Magada - Github](https://github.com/dmagda/DevMastersDb/blob/main/postgres/postgres_mvcc_backstage.md#js-repo-pjax-container)
