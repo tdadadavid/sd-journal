@@ -122,7 +122,9 @@ This isolation ensures that a transaction only reads committed data. Meaning it 
 [Link to my practice](https://github.com/tdadadavid/pg-mvcc)
 
 
-### Repeatable Read
+<details open> 
+<summary><b>Repeatable Read<b></summary>
+
 This isolation ensures that a transaction has consistent values for the same read within a trnasaction. It is not affected by other updates from other transactions.
 
 #### Practical Flow (MySQL)
@@ -163,3 +165,5 @@ COMMIT;
 +----+----------+
 ```
 You still get the same result, why is that? because in `REPEATABLE READS` isolation level, all reads within a transaction are consistent and it is not affected by changes made by other transactions. Meaning if at the start of the transaction (in both sessions) the name was `John` in both sessions, then `session_1` updates it to `John Doe`, `session_2` will still see the name as `John` until it `COMMIT` its own transaction.
+
+</details>
