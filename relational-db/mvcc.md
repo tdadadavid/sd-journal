@@ -1,6 +1,20 @@
 # Multi Version Concurrency Control
 
 
+## Introduction
+Postgres can store multiple versions of a row in a table. These hidden columns are used to handle the `visibility` of these versions in the running transaction request. There are hidden columns in every table which are;
+
+1. `ctid`: unique row identifier. It is made up of a page number and an ID within that page.
+```mermaid
+graph LR
+    A[ctid] --> B[Page Number]
+    B --> C[ID within Page]
+```
+
+2. `xmin`: identifier for the transaction that created the row. It can change if the row is updated.
+3. `xmax`: identifier for the transaction that deleted the row. When `xmax` is set, the row is considered deleted.
+4. `xvac`: identifier for the transaction that vacuumed the row
+
 ## Transaction Isolation Levels
 
 1. Read Uncommitted
