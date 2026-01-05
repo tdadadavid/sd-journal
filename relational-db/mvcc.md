@@ -39,8 +39,10 @@ Isolation states how each transaction interacts with other transactions while ru
 4. Serializable
 
 <details open> 
-    <summary><b>Read Committed<b><summary>
-    This isolation ensures that a transaction only reads committed data. Meaning it is possible two reads within the same transaction sees different data. 
+<summary><b>Read Committed<b></summary>
+
+
+This isolation ensures that a transaction only reads committed data. Meaning it is possible two reads within the same transaction sees different data. 
     
   #### Practical Flow (MySQL)
     
