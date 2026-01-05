@@ -28,9 +28,10 @@ Resources:
 1. [Denis Magada - Github](https://github.com/dmagda/DevMastersDb/blob/main/postgres/postgres_mvcc_backstage.md#js-repo-pjax-container)
 2. [MVCC - Denis Magada](https://www.youtube.com/watch?v=TBmDBw1IIoY)
 
-
+----
 
 ## Transaction Isolation Levels
+Isolation states how each transaction interacts with other transactions while running concurrently. It determines the visibility of data changes made by other transactions. We can tune this in several ways:
 
 1. Read Uncommitted
 2. Read Committed
@@ -45,3 +46,43 @@ Resources:
 
 
 ### Repeatable Read
+This isolation ensures that a transaction has consistent values for the same read within a trnasaction. It is not affected by other updates from other transactions.
+
+#### Practical Flow
+1. Open two mysql sessions `session_1` and `session_2`
+2. Create db and table eg. testdb and users table (id int, name varchar(255))
+3. insert data into users from `session_1`. 
+  ```sql 
+  INSERT INTO users (name) VALUES (1, 'John');
+  ```
+4. Ensure you can see the data from `session_1` and `session_2` by running `SELECT * FROM users;` in both sessions.
+5. Start a transaction in  `session_1` & `session_2`  then update the name of John to 'John Doe' in `session_1`
+```sql
+START TRANSACTION;
+UPDATE users SET name = 'John Doe' WHERE id = 1;
+```
+6. Try reading the data from `session_2` while the transaction is not committed 
+```sql
+SELECT * FROM users;
+```
+You see the table and wonder, oh is it because we didn't commit the transaction in `session_1`🤔? Lets do that
+```
++----+----------+
+| id | name     |
++----+----------+
+| 1  | John     |
++----+----------+
+```
+7. In `session_1` commit the transaction
+```sql
+COMMIT;
+```
+8. Try reading the data from `session_2` again, 
+```
++----+----------+
+| id | name     |
++----+----------+
+| 1  | John     |
++----+----------+
+```
+You still get the same result, why is that? because in `REPEATABLE READS` isolation level, all reads within a transaction are consistent and it is not affected by changes made by other transactions. Meaning if at the start of the transaction (in both sessions) the name was `John` in both sessions, then `session_1` updates it to `John Doe`, `session_2` will still see the name as `John` until it `COMMIT` its own transaction.
