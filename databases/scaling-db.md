@@ -65,13 +65,12 @@ To solve this problem, we can use a technique called __write-ahead logging__ (WA
 
 ```mermaid
 flowchart TB
-    Client -->|Write Request| API
+    Client -->|Write request| API
+    API --> Master[Master DB]
 
-    API --> Master["Master DB"]
-
-    Master -->|WAL Stream (Sync)| R1["Replica 1"]
-    Master -->|WAL Stream (Sync)| R2["Replica 2"]
-    Master -->|WAL Stream (Sync)| R3["Replica 3"]
+    Master -->|WAL sync| R1[Replica 1]
+    Master -->|WAL sync| R2[Replica 2]
+    Master -->|WAL sync| R3[Replica 3]
 
     R1 -->|ACK| Master
     R2 -->|ACK| Master
@@ -79,6 +78,7 @@ flowchart TB
 
     Master -->|Commit OK| API
     API -->|Response| Client
+
 ```
 </details>
 
