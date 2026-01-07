@@ -59,9 +59,32 @@ Just like in every standard distributed system, __consistency__ is divided into 
 
 <details open>
 <summary> <b> Strong Consistency </b></summary>
-In the case of strong consistency, the flow is typically when a `write` operation is performed on the master, the write operation must be **immediately** performed as well on the `replicas`. Meaning before the response is sent to the client that made the api request, we must write through the master and``replica`. Hmm this introduces a performance bottleneck on the api request making it slower. It has a benefit of being strictly consistent (`replica.state() == master.state()`) but it is not scalable.
+In the case of strong consistency, the flow is typically as follows:
 
-To solve this problem, we can use a technique called __write-ahead logging__ [WAL](https://www.postgresql.org/docs/current/wal.html). WAL is a mechanism that allows us to log all write operations before they are applied to the database. This means that we can apply the write operations to the replicas in parallel, without waiting for the master to finish writing. This allows us to achieve strong consistency without sacrificing performance.
+When a WRITE operation is performed on the master, the write must be immediately applied to the replicas as well. This means that before the API response is sent back to the client, the system must ensure the write has been persisted on both the master and its replicas.
+
+This approach guarantees strict consistency:
+```go
+	replica.State() == master.State()
+```
+However, it introduces a performance bottleneck. Since the API request must wait for multiple writes to complete, request latency increases. While this model provides strong correctness guarantees, it does not scale well under high write throughput.
+
+#### How this can be solved?
+To mitigate this issue, we can use a technique called Write-Ahead Logging (WAL).
+
+WAL works by logging every write operation before it is applied to the database. Once the log entry is safely persisted, the system can immediately acknowledge the request to the client.
+
+Key benefits of WAL:
+
+- The master appends the write to the WAL and returns success.
+
+- Replicas consume the WAL asynchronously.
+
+- Replication happens in parallel, not inline with the API request.
+
+- The system avoids blocking on replica writes during request handling.
+
+This approach allows the system to preserve strong consistency semantics (no committed write is lost) without sacrificing performance or scalability.
 
 ```mermaid
 flowchart TB
