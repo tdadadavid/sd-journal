@@ -63,7 +63,7 @@ graph LR
 </details>
 
 <details open>
-<summary><b><Eventual Consistency></b></summary>
+<summary><b>Eventual Consistency</b></summary>
 This typical flow for this is that the api sends request to the master, then responds to the api. Notice that the replica had not involvement in this process. Now how do we ensure that the replicas have the updated data from the master?
 
 To achieve this, we can use a technique called _eventual consistency_. In this approach, the replicas are allowed to lag behind the master, but they will eventually catch up. This is achieved by periodically synchronizing the replicas with the master. This allows us to achieve high performance while sacrificing some consistency guarantees (some reads may be stale).
