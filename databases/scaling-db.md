@@ -65,17 +65,20 @@ To solve this problem, we can use a technique called _write-ahead logging_ (WAL)
 
 ```mermaid
 flowchart TB
-    Client --> LB[Load Balancer]
+    Client -->|Write Request| API
 
-    subgraph "Horizontally Scaled Service"
-        S1[Server]
-        S2[Server]
-        S3[Server]
-    end
+    API --> Master["Master DB"]
 
-    LB --> S1
-    LB --> S2
-    LB --> S3
+    Master -->|WAL Stream (Sync)| R1["Replica 1"]
+    Master -->|WAL Stream (Sync)| R2["Replica 2"]
+    Master -->|WAL Stream (Sync)| R3["Replica 3"]
+
+    R1 -->|ACK| Master
+    R2 -->|ACK| Master
+    R3 -->|ACK| Master
+
+    Master -->|Commit OK| API
+    API -->|Response| Client
 ```
 </details>
 
@@ -85,10 +88,15 @@ This typical flow for this is that the api sends request to the master, then res
 
 To achieve this, we can use a technique called _eventual consistency_. In this approach, the replicas are allowed to lag behind the master, but they will eventually catch up. This is achieved by periodically synchronizing the replicas with the master. This allows us to achieve high performance while sacrificing some consistency guarantees (some reads may be stale).
 ```mermaid
-graph LR
-    A[Master] -->|Write| B[Replica 1]
-    A -->|Write| C[Replica 2]
-    A -->|Write| D[Replica 3]
+flowchart TB
+    Client -->|Write Request| API
+    API --> Master["Master DB"]
+    Master -->|Immediate ACK| API
+    API -->|Response| Client
+
+    Master -.->|Async Replication| R1["Replica 1"]
+    Master -.->|Async Replication| R2["Replica 2"]
+    Master -.->|Async Replication| R3["Replica 3"]
 ```
 </details>
 
