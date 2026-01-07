@@ -59,9 +59,9 @@ Just like in every standard distributed system, __consistency__ is divided into 
 
 <details open>
 <summary> <b> Strong Consistency </b></summary>
-In the case of strong consistency, the flow is typically when a _write_ is performed on the master, the write operation must be **immediately** performed as well on the __replicas__ meaning before the response is sent to the client that made the api request, we must write through the master and __replica__. Hmm this introduces a performace bottleneck on the api request making it slower. It has a benefit of being strictly consistent (`replica.state() == master.state()`) but it is not scalable.
+In the case of strong consistency, the flow is typically when a `write` operation is performed on the master, the write operation must be **immediately** performed as well on the `replicas`. Meaning before the response is sent to the client that made the api request, we must write through the master and``replica`. Hmm this introduces a performance bottleneck on the api request making it slower. It has a benefit of being strictly consistent (`replica.state() == master.state()`) but it is not scalable.
 
-To solve this problem, we can use a technique called __write-ahead logging__ (WAL)[https://www.postgresql.org/docs/current/wal.html]. WAL is a mechanism that allows us to log all write operations before they are applied to the database. This means that we can apply the write operations to the replicas in parallel, without waiting for the master to finish writing. This allows us to achieve strong consistency without sacrificing performance.
+To solve this problem, we can use a technique called __write-ahead logging__ [WAL](https://www.postgresql.org/docs/current/wal.html). WAL is a mechanism that allows us to log all write operations before they are applied to the database. This means that we can apply the write operations to the replicas in parallel, without waiting for the master to finish writing. This allows us to achieve strong consistency without sacrificing performance.
 
 ```mermaid
 flowchart TB
@@ -86,7 +86,7 @@ flowchart TB
 <summary><b>Eventual Consistency</b></summary>
 This typical flow for this is that the api sends request to the master, then responds to the api. Notice that the replica had not involvement in this process. Now how do we ensure that the replicas have the updated data from the master?
 
-To achieve this, we can use a technique called _eventual consistency_. In this approach, the replicas are allowed to lag behind the master, but they will eventually catch up. This is achieved by periodically synchronizing the replicas with the master. This allows us to achieve high performance while sacrificing some consistency guarantees (some reads may be stale).
+To achieve this, we can use a technique called __eventual consistency__. In this approach, the replicas are allowed to lag behind the master, but they will eventually catch up. This is achieved by periodically synchronizing the replicas with the master. This allows us to achieve high performance while sacrificing some consistency guarantees (some reads may be stale).
 ```mermaid
 flowchart TB
     Client -->|Write Request| API
