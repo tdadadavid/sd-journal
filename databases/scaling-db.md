@@ -23,7 +23,7 @@ flowchart LR
 ### Horizontal Scaling
 This technique involves _distributing_ load across several servers or nodes in a cluster. It is a better approach in most cases than vertical scalling.
 
-```
+```mermaid
 flowchart TB
     Client --> LB[Load Balancer]
 
