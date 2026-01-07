@@ -24,9 +24,18 @@ flowchart LR
 This technique involves _distributing_ load across several servers or nodes in a cluster. It is a better approach in most cases than vertical scalling.
 
 ```
-graph LR
-    A[Server 1] -->|Data| B[Server 2]
-    B -->|Data| C[Server 3]
+flowchart TB
+    Client --> LB[Load Balancer]
+
+    subgraph "Horizontally Scaled Service"
+        S1[Server]
+        S2[Server]
+        S3[Server]
+    end
+
+    LB --> S1
+    LB --> S2
+    LB --> S3
 ```
 
 Horizontal Scaling is achieved using different techniques.
@@ -55,10 +64,18 @@ In the case of strong consistency, the flow is typically when a _write_ is perfo
 To solve this problem, we can use a technique called _write-ahead logging_ (WAL)[https://www.postgresql.org/docs/current/wal.html]. WAL is a mechanism that allows us to log all write operations before they are applied to the database. This means that we can apply the write operations to the replicas in parallel, without waiting for the master to finish writing. This allows us to achieve strong consistency without sacrificing performance.
 
 ```mermaid
-graph LR
-    A[Master] -->|Write| B[Replica 1]
-    A -->|Write| C[Replica 2]
-    A -->|Write| D[Replica 3]
+flowchart TB
+    Client --> LB[Load Balancer]
+
+    subgraph "Horizontally Scaled Service"
+        S1[Server]
+        S2[Server]
+        S3[Server]
+    end
+
+    LB --> S1
+    LB --> S2
+    LB --> S3
 ```
 </details>
 
