@@ -10,14 +10,15 @@ It is actually the easiest approach to scale a database by simply adding more se
 ```mermaid
 flowchart LR
     subgraph Before["Before Vertical Scaling"]
-        A["Server\nCPU: 2\nRAM: 4GB\nDisk: 100GB"]
+        A["Server<br/>CPU: 2<br/>RAM: 4GB<br/>Disk: 100GB"]
     end
 
     subgraph After["After Vertical Scaling"]
-        B["Server\nCPU: 8\nRAM: 32GB\nDisk: 1TB"]
+        B["Server<br/>CPU: 8<br/>RAM: 32GB<br/>Disk: 1TB"]
     end
 
     A -->|Upgrade Hardware| B
+
 ```
 
 ### Horizontal Scaling
