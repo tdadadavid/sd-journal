@@ -8,9 +8,16 @@ This technique involves adding more hardware resources (CPU, RAM, Storage, Netwo
 It is actually the easiest approach to scale a database by simply adding more servers or nodes to the cluster. It has its limitations which basically _hardware limits_
 
 ```mermaid
-graph LR
-    A[Server 1] -->|Data| B[Server 2]
-    B -->|Data| C[Server 3]
+flowchart LR
+    subgraph Before["Before Vertical Scaling"]
+        A["Server\nCPU: 2\nRAM: 4GB\nDisk: 100GB"]
+    end
+
+    subgraph After["After Vertical Scaling"]
+        B["Server\nCPU: 8\nRAM: 32GB\nDisk: 1TB"]
+    end
+
+    A -->|Upgrade Hardware| B
 ```
 
 ### Horizontal Scaling
