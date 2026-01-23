@@ -124,3 +124,12 @@ flowchart TB
 </details>
 
 </details>
+
+
+## Awesome Reads
+* [Scaling PostgreSQL @ OpenAI](https://openai.com/index/scaling-postgresql/)
+* [The part of PostgreSQL we hate the most](https://www.cs.cmu.edu/~pavlo/blog/2023/04/the-part-of-postgresql-we-hate-the-most.html)
+* [Cascading Replication](https://www.postgresql.org/docs/current/warm-standby.html#CASCADING-REPLICATION)
+* [When does ALTER require a rewrite](https://www.crunchydata.com/blog/when-does-alter-table-require-a-rewrite)
+* [Cache Locking](https://chatgpt.com/share/69736d2c-4778-8005-9472-20c7526fec62)
+* [OLTP Anti-patterns](https://chatgpt.com/share/69736d46-5e18-8005-98b3-f841b8a3d003)
