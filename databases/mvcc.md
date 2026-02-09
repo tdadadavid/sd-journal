@@ -206,7 +206,7 @@ SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 Resources:
 1. [Denis Magada - Github](https://github.com/dmagda/DevMastersDb/blob/main/postgres/postgres_mvcc_backstage.md#js-repo-pjax-container)
 2. [MVCC - Denis Magada](https://www.youtube.com/watch?v=TBmDBw1IIoY)
-3. [Isolation Anomalies in PostgreSQL](https://pgdash.io/blog/isolation-anomalies-in-postgresql.html)
+3. [Isolation Anomalies in PostgresSQL](https://pgdash.io/blog/isolation-anomalies-in-postgresql.html)
 4. [Transaction Isolation in Postgres, explained](https://www.thenile.dev/blog/transaction-isolation-postgres) (not read)
-5. [Serialiable Snapsot Isolation - Video](https://www.youtube.com/watch?v=4TAKYRzm_dA) (not watched)
-6. [Serializable Snapshot Isolation - Article](https://tech-lessons.in/en/blog/serializable_snapshot_isolation/)
+5. [Serializable Snapshot Isolation—Video](https://www.youtube.com/watch?v=4TAKYRzm_dA) (not watched)
+6. [Serializable Snapshot Isolation—Article](https://tech-lessons.in/en/blog/serializable_snapshot_isolation/)
