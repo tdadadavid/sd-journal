@@ -1,6 +1,8 @@
 # Scaling Database
 
 ## Techniques for Scaling
+- Sharding and Portioning
+- Replication
 
 
 ### Vertical Scaling
